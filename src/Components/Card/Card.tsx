@@ -1,8 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from "react-native"
 import { colors, fontSize, spacing } from "../../theme";
+import { CustomButton } from "../CustomButton";
 
 
-export const Card = () => {
+interface Props {
+    // increment and decrement function will be require 
+    increment?: () => void;
+    decrement?: () => void;
+}
+
+export const Card = (props: Props) => {
+
+    const { decrement, increment } = props
+
     return (
         <TouchableOpacity activeOpacity={0.9} style={styles.container}>
             <ImageBackground source={require("../../assets/banana.png")} resizeMode="cover" style={styles.image}>
@@ -12,8 +22,23 @@ export const Card = () => {
                     </View>
                 </View>
                 <View style={{ backgroundColor: colors.transparent_dark, }}>
-                    <Text style={styles.text}>Banana</Text>
-                    <Text style={[styles.text, { fontSize: fontSize.xl, fontWeight: '800' }]} >$12</Text>
+                    <Text style={{...styles.text, fontWeight:'400'}}>Banana</Text>
+                    <Text style={[styles.text, { fontSize: fontSize.xl, fontWeight: '500' }]} >$12</Text>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 20, }}>
+                    <CustomButton
+                        onPress={decrement}
+                        btnText="-"
+                        btnStyle={{ width: '50%' }}
+                        btnTextStyle={{ color: colors.white, fontWeight:'900' }}
+                    />
+                    <View style={{ padding: 4 }} />
+                    <CustomButton
+                        onPress={increment}
+                        btnText="+"
+                        btnStyle={{ backgroundColor: colors.dark_blue, width: '50%' }}
+                        btnTextStyle={{ color: colors.white, fontWeight:'900' }}
+                    />
                 </View>
             </ImageBackground>
         </TouchableOpacity>
