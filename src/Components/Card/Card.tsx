@@ -1,33 +1,33 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from "react-native"
+import { colors, fontSize, spacing } from "../../theme";
 
 
-const Card = () => {
+export const Card = () => {
     return (
         <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-            <ImageBackground source={require("../assets/banana.png")} resizeMode="cover" style={styles.image}>
+            <ImageBackground source={require("../../assets/banana.png")} resizeMode="cover" style={styles.image}>
                 <View style={styles.orderCounterContainer}>
                     <View style={styles.orderCounter}>
-                        <Text style={[styles.text, { fontSize: 18, fontWeight: '800' }]} > 12 </Text>
+                        <Text style={[styles.text, { fontSize: fontSize.lg, fontWeight: '800' }]} > 12 </Text>
                     </View>
                 </View>
-                <View style={{ backgroundColor: '#000000c0', }}>
+                <View style={{ backgroundColor: colors.transparent_dark, }}>
                     <Text style={styles.text}>Banana</Text>
-                    <Text style={[styles.text, { fontSize: 20, fontWeight: '800' }]} >$12</Text>
+                    <Text style={[styles.text, { fontSize: fontSize.xl, fontWeight: '800' }]} >$12</Text>
                 </View>
             </ImageBackground>
         </TouchableOpacity>
     )
 }
 
-export default Card;
 
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         borderRadius: 10,
 
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 4,
@@ -39,20 +39,20 @@ const styles = StyleSheet.create({
 
     },
     orderCounterContainer: {
-        padding: 8,
+        padding: spacing.sm,
         flexDirection: 'row-reverse'
     },
     orderCounter: {
-        padding: 10,
-        backgroundColor: 'red',
+        padding: spacing.sm,
+        backgroundColor: colors.red,
         borderRadius: 50
     },
     image: {
         justifyContent: 'center',
     },
     text: {
-        color: 'white',
-        fontSize: 40,
+        color: colors.white,
+        fontSize: fontSize.xxxxxl,
         textAlign: 'center',
     },
 });
