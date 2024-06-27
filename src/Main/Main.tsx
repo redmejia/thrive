@@ -1,11 +1,21 @@
-import { SafeAreaView } from "react-native"
-import Orders from "../Screens/Menu";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import Checkout from '../Screens/Checkout';
+import Menu from '../Screens/Menu';
+
+export type RootStackParams = {
+    Menu?: Object;
+    Checkout?: Object;
+}
+
+const Stack = createStackNavigator<RootStackParams>();
 
 const Main = () => {
     return (
-        <SafeAreaView style={{ flex: 1}}>
-            <Orders />
-        </SafeAreaView>
+        <Stack.Navigator>
+           <Stack.Screen name='Menu' component={Menu} />
+           <Stack.Screen name="Checkout" component={Checkout} />
+        </Stack.Navigator>
     )
 }
 
