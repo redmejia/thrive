@@ -1,33 +1,28 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ImageSourcePropType } from "react-native"
 import { colors, fontSize, spacing } from "../../theme";
 import { CustomButton } from "../CustomButton";
+import { Product } from "../../data/data";
 
 
-interface Props {
-    product: string;
-    price: number;
-    counter: number;
-    image: ImageSourcePropType
-
-    increment?: () => void;
-    decrement?: () => void;
+interface Props extends Product {
+    increment: () => void;
+    decrement: () => void;
 }
 
 export const Card = (props: Props) => {
 
-    const { product, price, counter, image, decrement, increment } = props
+    const { id, image, price, productName, counter, decrement, increment } = props
 
     return (
-        <TouchableOpacity activeOpacity={0.9} style={styles.container}>
+        <TouchableOpacity activeOpacity={0.9} style={styles.container} key={id}>
             <ImageBackground source={image} resizeMode="cover" style={styles.image}>
                 <View style={styles.orderCounterContainer}>
                     <View style={{ ...styles.orderCounter, backgroundColor: counter > 0 ? colors.red : 'transparent' }}>
                         <Text style={[styles.text, { fontSize: fontSize.lg, fontWeight: '800' }]} > {counter} </Text>
                     </View>
-
                 </View>
                 <View style={{ backgroundColor: colors.transparent_dark, }}>
-                    <Text style={{ ...styles.text, fontWeight: '400' }}>{product}</Text>
+                    <Text style={{ ...styles.text, fontWeight: '400' }}>{productName}</Text>
                     <Text style={[styles.text, { fontSize: fontSize.xl, fontWeight: '500' }]} >$ {price}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 20, }}>

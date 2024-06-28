@@ -1,18 +1,32 @@
 import { View, FlatList, useWindowDimensions, StyleSheet } from "react-native";
-import { DATA, StoreData } from "../data/data";
+import { DATA, Product } from "../data/data";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../Main/Main";
 import { Card, CustomButton } from "../Components";
 import { spacing } from "../theme";
+import { useEffect } from "react";
+import { RootStore } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { loadProducts, addProduct, removeProduct } from "../Redux/product/productSlice";
 
 interface Props extends StackScreenProps<RootStackParams, "Menu"> {}
 
-const RenderItems = ({ item }: { item: StoreData }) => {
+interface RenderProps {
+  item: Product,
+}
+
+const RenderItems = ({ item }: RenderProps) => {
+
+  const dispatch = useDispatch()
+
   return (
     <View style={styles.cardContainer}>
       <Card
+        id={item.id}
+        increment={() => dispatch(addProduct(item))}
+        decrement={() => dispatch(removeProduct(item))}
         counter={item.counter}
-        product={item.product}
+        productName={item.productName}
         price={item.price}
         image={item.image}
       />
@@ -23,11 +37,19 @@ const RenderItems = ({ item }: { item: StoreData }) => {
 const Menu = ({ navigation }: Props) => {
   const { height } = useWindowDimensions();
 
+  const products = useSelector((state: RootStore) => state.products.products)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loadProducts(DATA))
+  }, [dispatch])
+
+
   return (
     <View style={styles.container}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={DATA}
+        data={products.list}
         numColumns={2}
         renderItem={({ item }) => <RenderItems item={item} />}
         keyExtractor={(item) => item.id}
