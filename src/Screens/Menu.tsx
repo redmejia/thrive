@@ -1,33 +1,35 @@
-import { View, Text, useWindowDimensions } from "react-native";
-import { increment } from "../Redux/total/totalSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "../../store";
+import { View, FlatList, useWindowDimensions } from "react-native";
+import { DATA, StoreData } from "../data/data";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../Main/Main";
-import { CustomButton } from "../Components";
+import { Card, CustomButton } from "../Components";
 import { spacing } from "../theme";
 
-interface Props extends StackScreenProps<RootStackParams, "Menu"> {}
+interface Props extends StackScreenProps<RootStackParams, "Menu"> { }
+
+const RenderItems = ({ item }: { item: StoreData }) => {
+  return (
+    <View style={{
+      flex: 1,
+      justifyContent: "space-around",
+      padding: 10,
+    }}>
+      <Card
+        counter={item.counter}
+        product={item.product}
+        price={item.price}
+        image={item.image}
+      />
+    </View>
+  )
+}
 
 const Menu = ({ navigation }: Props) => {
-  const total = useSelector((state: RootStore) => state.total);
-  const dispatch = useDispatch();
   const { height } = useWindowDimensions();
 
   return (
     <View style={{ flex: 1, marginHorizontal: spacing.xs + spacing.md }}>
-      <Text style={{ fontSize: 30, textAlign: "center" }}>
-        Total : {total.total}
-      </Text>
 
-      <View>
-        <CustomButton
-          btnText="Check out"
-          onPress={() => navigation.navigate("Checkout")}
-        />
-        <View style={{ margin: 10 }} />
-        <CustomButton btnText="+" onPress={() => dispatch(increment())} />
-      </View>
       <CustomButton
         btnText="TOTAL: $90.00"
         btnStyle={{
@@ -36,8 +38,16 @@ const Menu = ({ navigation }: Props) => {
           width: "100%",
         }}
       />
+      <FlatList
+        data={DATA}
+        numColumns={2}
+        renderItem={({ item }) => <RenderItems item={item} />}
+        keyExtractor={item => item.id}
+      />
     </View>
-  );
+  )
+
+
 };
 
 export default Menu;
