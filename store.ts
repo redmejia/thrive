@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import totalSlice from "./src/Redux/total/totalSlice";
+import orderSlice from "./src/Redux/order/orderSlice";
 import productSlice from "./src/Redux/product/productSlice";
 
 export const store = configureStore({
-    reducer : {
-        total: totalSlice,
+    reducer: {
+        order: orderSlice,
         products: productSlice,
     }
 })

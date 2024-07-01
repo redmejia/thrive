@@ -1,5 +1,6 @@
 import { View, FlatList, useWindowDimensions, StyleSheet } from "react-native";
-import { DATA, Product } from "../data/data";
+import { DATA } from "../data/data";
+import { Product } from "../data/models/models";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../Main/Main";
 import { Card, CustomButton } from "../Components";
@@ -8,8 +9,9 @@ import { useEffect } from "react";
 import { RootStore } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { loadProducts, addProduct, removeProduct } from "../Redux/product/productSlice";
+import { addItemToCart, removeItemFromCart } from "../Redux/order/orderSlice";
 
-interface Props extends StackScreenProps<RootStackParams, "Menu"> {}
+interface Props extends StackScreenProps<RootStackParams, "Menu"> { }
 
 interface RenderProps {
   item: Product,
@@ -19,12 +21,22 @@ const RenderItems = ({ item }: RenderProps) => {
 
   const dispatch = useDispatch()
 
+  const add = () => {
+    dispatch(addProduct(item))
+    dispatch(addItemToCart({ id: item.id, price: item.price }))
+  }
+
+  const remove = () => {
+    dispatch(removeProduct(item));
+    dispatch(removeItemFromCart(item.id));
+  }
+
   return (
     <View style={styles.cardContainer}>
       <Card
         id={item.id}
-        increment={() => dispatch(addProduct(item))}
-        decrement={() => dispatch(removeProduct(item))}
+        increment={add}
+        decrement={remove}
         counter={item.counter}
         productName={item.productName}
         price={item.price}
@@ -38,6 +50,10 @@ const Menu = ({ navigation }: Props) => {
   const { height } = useWindowDimensions();
 
   const products = useSelector((state: RootStore) => state.products.products)
+  const { order } = useSelector((state: RootStore) => state.order)
+
+  
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -56,7 +72,7 @@ const Menu = ({ navigation }: Props) => {
         contentContainerStyle={{ paddingBottom: height * 0.2 }}
       />
       <CustomButton
-        btnText="TOTAL: $90.00"
+        btnText={"$" + order.total.toFixed(2).toString()}
         btnStyle={{
           position: "absolute",
           bottom: height * 0.06,
