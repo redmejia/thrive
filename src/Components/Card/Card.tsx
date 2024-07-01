@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ImageSourcePropType } from "react-native"
 import { colors, fontSize, spacing } from "../../theme";
 import { CustomButton } from "../CustomButton";
-import { Product } from "../../data/data";
+import { Product } from "../../data/models/models";
 
 
 interface Props extends Product {
@@ -26,12 +26,16 @@ export const Card = (props: Props) => {
                     <Text style={[styles.text, { fontSize: fontSize.xl, fontWeight: '500' }]} >$ {price}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 20, }}>
-                    <CustomButton
-                        onPress={decrement}
-                        btnText="-"
-                        btnStyle={{ width: '50%' }}
-                        btnTextStyle={{ color: colors.white, fontWeight: '900' }}
-                    />
+                    {counter !== 0 &&
+                        // add disable props for custom button
+                        <CustomButton
+                            onPress={decrement}
+                            btnText="-"
+                            btnStyle={{ width: '50%' }}
+                            btnTextStyle={{ color: colors.white, fontWeight: '900' }}
+                        />
+                    }
+
                     <View style={{ padding: 4 }} />
                     <CustomButton
                         onPress={increment}
