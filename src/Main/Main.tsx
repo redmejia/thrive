@@ -31,7 +31,16 @@ const Main = () => {
       <Stack.Screen
         name="Checkout"
         options={{
-          headerShown: false,
+          headerBackTitleVisible: false,
+          headerTitle: "Cambio",
+          cardStyle: { backgroundColor: colors.white },
+          headerStyle: {
+            backgroundColor: colors.white,
+            borderBottomColor: "transparent",
+            borderBottomWidth: 0,
+            shadowOpacity: 0,
+            elevation: 0,
+          },
         }}
         component={Checkout}
       />

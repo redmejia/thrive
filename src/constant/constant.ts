@@ -12,4 +12,6 @@ export const stringText = {
       hundred: "100",
     },
   },
+  placeholder: "Entre cantidad",
+  change: "Cambio",
 };
