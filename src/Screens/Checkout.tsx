@@ -1,6 +1,6 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
 import { stringText } from "../constant";
-import { fontSize, spacing } from "../theme";
+import { colors, fontSize, spacing } from "../theme";
 import { CustomButton } from "../Components";
 import { useSelector } from "react-redux";
 import { RootStore } from "../../store";
@@ -21,9 +21,6 @@ const Checkout = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.finalTotal}>
-          {stringText.checkout.title} ${total}{" "}
-        </Text>
         <View style={styles.buttonContainer}>
           {denomination.map((item, index) => (
             <CustomButton
@@ -33,6 +30,35 @@ const Checkout = () => {
             />
           ))}
         </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={stringText.placeholder}
+            keyboardType="numeric"
+            placeholderTextColor={"black"}
+          />
+          <View style={{ margin: 10 }} />
+          <CustomButton btnText={"Cambio"} btnStyle={styles.btnCambio} />
+        </View>
+        <View style={{ marginVertical: 24 }}>
+          <View style={styles.lineDivider} />
+          <View style={styles.totalContainer}>
+            <Text style={styles.finalTotal}>{stringText.checkout.title}</Text>
+            <Text style={styles.finalTotal}>${total} </Text>
+          </View>
+          <View style={styles.lineDivider} />
+          <View style={styles.totalContainer}>
+            <Text style={styles.finalTotal}>{stringText.change}</Text>
+            <Text style={styles.finalTotal}>${} </Text>
+          </View>
+          <View
+            style={{
+              height: StyleSheet.hairlineWidth,
+              backgroundColor: colors.dark_blue,
+            }}
+          />
+        </View>
+        <CustomButton btnText={"Nueva Orden"} btnStyle={styles.btnNewOrder} />
       </View>
     </SafeAreaView>
   );
@@ -41,6 +67,34 @@ const Checkout = () => {
 export default Checkout;
 
 const styles = StyleSheet.create({
+  btnNewOrder: {
+    marginTop: spacing.md,
+    backgroundColor: colors.light_blue,
+  },
+  totalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: spacing.lg,
+  },
+  lineDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.dark_blue,
+  },
+  btnCambio: {
+    marginTop: spacing.md,
+    backgroundColor: colors.light_blue,
+  },
+  input: {
+    marginTop: spacing.md,
+    padding: spacing.md,
+    backgroundColor: colors.light_grey,
+    borderRadius: 25,
+    flex: 1,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    marginVertical: spacing.lg,
+  },
   button: {
     marginTop: spacing.md,
     flexBasis: "30%",
@@ -51,7 +105,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   finalTotal: {
-    textAlign: "right",
     fontSize: fontSize.xxl,
     fontWeight: "600",
   },
