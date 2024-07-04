@@ -3,12 +3,12 @@ import { Store, Product } from "../../data/models/models";
 
 
 export interface ProductState {
-    products: Store
+    products: Store,
 }
 
 const initialState: ProductState = {
     products: {
-        list: []
+        list: [],
     }
 }
 
@@ -30,15 +30,24 @@ export const productSlice = createSlice({
         removeProduct: (state, action: PayloadAction<Product>) => {
 
             const index = state.products.list.findIndex(product => product.id === action.payload.id);
-            
+
             if (index !== -1) {
                 if (state.products.list[index].counter !== 0) {
                     state.products.list[index].counter = action.payload.counter - 1
                 }
             }
-        }
+        },
+        clearProductCounter: (state) => {
+            state.products.list.map(product => {
+                if(product.counter > 0 ){
+                    product.counter = 0
+                }
+                return product
+            })
+        },
+       
     }
 })
 
-export const { loadProducts, addProduct, removeProduct } = productSlice.actions
+export const { loadProducts, addProduct, removeProduct, clearProductCounter } = productSlice.actions
 export default productSlice.reducer

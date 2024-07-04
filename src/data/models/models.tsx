@@ -9,7 +9,7 @@ export interface Product {
 }
 
 export interface Store {
-    list: Product[]
+    list: Product[],
 }
 
 export interface Cart {
