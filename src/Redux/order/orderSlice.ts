@@ -9,7 +9,7 @@ export interface CheckOutState {
 const initialState: CheckOutState = {
     order: {
         cart: [],
-        total: 0
+        total: 0,
     }
 }
 
@@ -29,9 +29,13 @@ export const orderSlice = createSlice({
                 state.order.cart.splice(idx, 1);
             }
         },
+        resetOrderCart : (state) => {
+            state.order.cart = []
+            state.order.total = 0
+        } 
     }
 })
 
-export const { removeItemFromCart, addItemToCart } = orderSlice.actions
+export const { removeItemFromCart, addItemToCart, resetOrderCart } = orderSlice.actions
 
 export default orderSlice.reducer
