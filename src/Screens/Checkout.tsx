@@ -1,11 +1,12 @@
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
   View,
 } from "react-native";
 import { stringText } from "../constant";
@@ -29,7 +30,7 @@ const denomination = [
   stringText.checkout.denomination.hundred,
 ];
 
-interface Props extends StackScreenProps<RootStackParams, "Checkout"> {}
+interface Props extends StackScreenProps<RootStackParams, "Checkout"> { }
 const Checkout = ({ navigation }: Props) => {
   const { order } = useSelector((state: RootStore) => state.order);
   let total = order.total.toFixed(2);
@@ -54,15 +55,13 @@ const Checkout = ({ navigation }: Props) => {
     navigation.navigate("Menu");
   };
 
+  const { height } = useWindowDimensions()
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-      >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.buttonContainer}>
             {denomination.map((item, index) => (
@@ -92,10 +91,9 @@ const Checkout = ({ navigation }: Props) => {
             <CustomButton
               onPress={changeCalculation}
               btnText={"Cambio"}
-              btnStyle={styles.btnCambio}
             />
           </View>
-          <View style={{ marginVertical: 24 }}>
+          <View>
             <View style={styles.lineDivider} />
             <View style={styles.totalContainer}>
               <Text style={styles.finalTotal}>{stringText.checkout.title}</Text>
@@ -110,27 +108,24 @@ const Checkout = ({ navigation }: Props) => {
                 </Text>
               </View>
             )) || (
-              <View style={styles.totalContainer}>
-                <Text style={styles.finalTotal}>{stringText.change}</Text>
-                <Text style={styles.finalTotal}>
-                  ${clientChange.toFixed(2)}{" "}
-                </Text>
-              </View>
-            )}
-            <View
-              style={{
-                height: StyleSheet.hairlineWidth,
-                backgroundColor: colors.dark_blue,
-              }}
+                <View style={styles.totalContainer}>
+                  <Text style={styles.finalTotal}>{stringText.change}</Text>
+                  <Text style={styles.finalTotal}>
+                    ${clientChange.toFixed(2)}{" "}
+                  </Text>
+                </View>
+              )}
+            <View style={styles.lineDivider} />
+          </View>
+          <View style={{ paddingVertical: height * 0.10 }}>
+            <CustomButton
+              onPress={newOrder}
+              btnText={"Nueva Orden"}
             />
           </View>
-          <CustomButton
-            onPress={newOrder}
-            btnText={"Nueva Orden"}
-            btnStyle={styles.btnNewOrder}
-          />
         </View>
-      </ScrollView>
+
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
@@ -138,25 +133,16 @@ const Checkout = ({ navigation }: Props) => {
 export default Checkout;
 
 const styles = StyleSheet.create({
-  btnNewOrder: {
-    marginTop: spacing.md,
-    backgroundColor: colors.light_blue,
-  },
   totalContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: spacing.lg,
+    marginVertical: spacing.md,
   },
   lineDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.dark_blue,
   },
-  btnCambio: {
-    marginTop: spacing.md,
-    backgroundColor: colors.light_blue,
-  },
   input: {
-    marginTop: spacing.md,
     padding: spacing.md,
     backgroundColor: colors.light_grey,
     borderRadius: 25,
@@ -164,7 +150,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    marginVertical: spacing.lg,
   },
   button: {
     marginTop: spacing.md,
@@ -176,11 +161,12 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   finalTotal: {
-    fontSize: fontSize.xxl,
+    fontSize: fontSize.xl,
     fontWeight: "600",
   },
   container: {
     flex: 1,
+    justifyContent: 'space-around',
     marginHorizontal: spacing.md + spacing.xs,
   },
 });
